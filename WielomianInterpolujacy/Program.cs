@@ -32,6 +32,9 @@ namespace WielomianInterpolujacy
             ObliczWyznaczniki();
             Console.WriteLine("\nWspółczynniki wielomianu: ");
             ObliczWspółczynniki();
+            DrukujWielomian();
+
+
             Console.ReadLine();
         }
 
@@ -155,6 +158,30 @@ namespace WielomianInterpolujacy
             {
                 _współczynniki[i] = Współczynnik(i);
                 Console.WriteLine(" a" + i + ": " + _współczynniki[i]);
+            }
+        }
+
+        static void DrukujWielomian()
+        {
+            Console.WriteLine("\nWielomian interpolujący: ");
+            for (int i = 0; i < _wymiar; i++)
+            {
+                // na potrzeby formatowania
+                bool flaga = false;
+
+                if (_współczynniki[i] != 0)
+                {
+                    if (i == 0)
+                        Console.Write(_współczynniki[i]);
+                    else
+                        Console.Write(_współczynniki[i] + "x^" + i);
+
+                    flaga = true;
+                }
+
+                if (i + 1 < _współczynniki.Length && flaga)  
+                    if (_współczynniki[i + 1] != 0)
+                        Console.Write(" + ");
             }
         }
 
