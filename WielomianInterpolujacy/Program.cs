@@ -8,52 +8,52 @@ namespace WielomianInterpolujacy
 {
     class Program
     {
-        private static int wymiar;
-        private static int[] węzły;
-        private static int[] dane;
-        private static int[,] macierz;
+        private static int _wymiar;
+        private static int[] _węzły;
+        private static int[] _dane;
+        private static int[] _wyznaczniki;
+        private static int[,] _macierz;
+
+        /* -------------------------
+        *  macierz[WIERSZ, KOLUMNA] 
+        *  ------------------------- */
 
         static void Main(string[] args)
         {
             WczytajDane();
             StwórzMacierz();
-            Console.WriteLine("Wyznacznik główny: " + Wyznacznik(macierz.GetLength(0), macierz));
+            Console.WriteLine("Macierz główna: ");
+            DrukujMacierz(_macierz);
+            Console.WriteLine("\nWyznacznik główny: " + Wyznacznik(_macierz.GetLength(0), _macierz));
+            Console.WriteLine("\nWyznaczniki cząstkowe: ");
+            ObliczWyznaczniki();
 
             Console.ReadLine();
         }
 
-        /*          wykładnik
-         *          potęgi  --->
-         *  węzeł   1   1   1
-         *     |    1   2   4
-         *     |    1   3   9
-         *     \/
-         * 
-         * 
-         */
-
         static void WczytajDane()
         {
             Console.WriteLine("Podaj ilość węzłów:");
-            wymiar = Int32.Parse(Console.ReadLine());
+            _wymiar = Int32.Parse(Console.ReadLine());
             // TODO: wymiar ma być większy od ?
-            węzły = new int[wymiar];
-            dane = new int[wymiar];
-            macierz = new int[wymiar, wymiar];
+            _węzły = new int[_wymiar];
+            _dane = new int[_wymiar];
+            _wyznaczniki = new int[_wymiar];
+            _macierz = new int[_wymiar, _wymiar];
 
             Console.WriteLine();
-            for (int i = 0; i < wymiar; i++)
+            for (int i = 0; i < _wymiar; i++)
             {
                 Console.Write("Podaj wartość węzła x" + i + ": ");
-                węzły[i] = Int32.Parse(Console.ReadLine());
+                _węzły[i] = Int32.Parse(Console.ReadLine());
                 // TODO: węzły 'x' mają być różne
             }
 
             Console.WriteLine();
-            for (int i = 0; i < wymiar; i++)
+            for (int i = 0; i < _wymiar; i++)
             {
                 Console.Write("Podaj daną y" + i + ": ");
-                dane[i] = Int32.Parse(Console.ReadLine());
+                _dane[i] = Int32.Parse(Console.ReadLine());
             }
 
             Console.WriteLine();
@@ -61,11 +61,11 @@ namespace WielomianInterpolujacy
 
         static void StwórzMacierz()
         {
-            for (int węzeł = 0; węzeł < wymiar; węzeł++)
+            for (int wiersz = 0; wiersz < _wymiar; wiersz++)
             {
-                for (int wykładnik = 0; wykładnik < wymiar; wykładnik++)
+                for (int kolumna = 0; kolumna < _wymiar; kolumna++)
                 {
-                    macierz[wykładnik, węzeł] = Potęga(węzły[węzeł], wykładnik);
+                    _macierz[wiersz, kolumna] = Potęga(_węzły[wiersz], kolumna);
                 }
             }
         }
@@ -82,6 +82,7 @@ namespace WielomianInterpolujacy
         {
             // algorytm oparty na rozwinięciu Laplace'a
             int suma = 0;
+
             int znak = 1;
 
             if (stopień == 1)
@@ -115,12 +116,34 @@ namespace WielomianInterpolujacy
             }
         }
 
-        static void DrukujMacierz()
+        static void ObliczWyznaczniki()
         {
-            Console.WriteLine("\n Macierz: ");
-            for (int wiersz = 0; wiersz < wymiar; wiersz++)
+            for (int i = 0; i < _wymiar; i++)
             {
-                for (int kolumna = 0; kolumna < wymiar; kolumna++)
+                _wyznaczniki[i] = Wyznacznik(_wymiar, MacierzTymczasowa(i, _macierz));
+                Console.WriteLine(" W" + i + ": " + _wyznaczniki[i] + "\n");
+            }
+        }
+
+        static int[,] MacierzTymczasowa(int kolumna, int[,] macierz)
+        {
+            int[,] macierzTymczasowa = (int[,]) macierz.Clone();
+
+            for (int i = 0; i < _wymiar; i++)
+            {
+                macierzTymczasowa[i, kolumna] = _dane[i];
+            }
+
+            DrukujMacierz(macierzTymczasowa);
+
+            return macierzTymczasowa;
+        }
+
+        static void DrukujMacierz(int[,] macierz)
+        {
+            for (int wiersz = 0; wiersz < _wymiar; wiersz++)
+            {
+                for (int kolumna = 0; kolumna < _wymiar; kolumna++)
                 {
                     Console.Write(macierz[wiersz, kolumna] + "\t");
                 }
