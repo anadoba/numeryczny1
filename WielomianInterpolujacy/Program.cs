@@ -33,7 +33,7 @@ namespace WielomianInterpolujacy
             Console.WriteLine("\nWspółczynniki wielomianu: ");
             ObliczWspółczynniki();
             DrukujWielomian();
-
+            DrukujCalke();
 
             Console.ReadLine();
         }
@@ -173,8 +173,11 @@ namespace WielomianInterpolujacy
                 {
                     if (i == 0)
                         Console.Write(_współczynniki[i]);
-                    else
+                    else if (i != 1)
                         Console.Write(_współczynniki[i] + "x^" + i);
+                    else
+                        Console.Write(_współczynniki[i] + "x");
+
 
                     flaga = true;
                 }
@@ -183,6 +186,33 @@ namespace WielomianInterpolujacy
                     if (_współczynniki[i + 1] != 0)
                         Console.Write(" + ");
             }
+        }
+
+        static void DrukujCalke()
+        {
+            Console.WriteLine("\nCalka: ");
+            for (int i = 0; i < _wymiar; i++)
+            {
+                bool flaga = false;
+
+                if (_współczynniki[i] != 0)
+                {
+                    if (i == 0)
+                        Console.Write(_współczynniki[i] + "x");
+                    else
+                        Console.Write("("+_współczynniki[i] + "x^" + (i+1) + ")/"+(i+1));
+
+                    flaga = true;
+                }
+
+                if (i + 1 < _współczynniki.Length && flaga)
+                {
+                    if (_współczynniki[i + 1] != 0)
+                        Console.Write(" + ");
+                }
+            }
+            Console.Write(" + C\n\n");
+
         }
 
         static void DrukujMacierz(int[,] macierz)
