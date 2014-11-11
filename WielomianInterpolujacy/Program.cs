@@ -9,9 +9,11 @@ namespace WielomianInterpolujacy
     class Program
     {
         private static int _wymiar;
+        private static int _wyznacznikGłówny;
         private static int[] _węzły;
         private static int[] _dane;
         private static int[] _wyznaczniki;
+        private static int[] _współczynniki;
         private static int[,] _macierz;
 
         /* -------------------------
@@ -24,10 +26,12 @@ namespace WielomianInterpolujacy
             StwórzMacierz();
             Console.WriteLine("Macierz główna: ");
             DrukujMacierz(_macierz);
-            Console.WriteLine("\nWyznacznik główny: " + Wyznacznik(_macierz.GetLength(0), _macierz));
+            _wyznacznikGłówny = Wyznacznik(_macierz.GetLength(0), _macierz);
+            Console.WriteLine("\nWyznacznik główny: " + _wyznacznikGłówny);
             Console.WriteLine("\nWyznaczniki cząstkowe: ");
             ObliczWyznaczniki();
-
+            Console.WriteLine("\nWspółczynniki wielomianu: ");
+            ObliczWspółczynniki();
             Console.ReadLine();
         }
 
@@ -39,6 +43,7 @@ namespace WielomianInterpolujacy
             _węzły = new int[_wymiar];
             _dane = new int[_wymiar];
             _wyznaczniki = new int[_wymiar];
+            _współczynniki = new int[_wymiar];
             _macierz = new int[_wymiar, _wymiar];
 
             Console.WriteLine();
@@ -137,6 +142,20 @@ namespace WielomianInterpolujacy
             DrukujMacierz(macierzTymczasowa);
 
             return macierzTymczasowa;
+        }
+
+        static int Współczynnik(int rząd)
+        {
+            return _wyznaczniki[rząd]/_wyznacznikGłówny;
+        }
+
+        static void ObliczWspółczynniki()
+        {
+            for (int i = 0; i < _wymiar; i++)
+            {
+                _współczynniki[i] = Współczynnik(i);
+                Console.WriteLine(" a" + i + ": " + _współczynniki[i]);
+            }
         }
 
         static void DrukujMacierz(int[,] macierz)
