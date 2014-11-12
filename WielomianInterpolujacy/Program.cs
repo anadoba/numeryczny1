@@ -24,14 +24,6 @@ namespace WielomianInterpolujacy
         static void Main(string[] args)
         {
             WczytajDane();
-            if (!(_wymiar > 0))
-            {
-                Console.WriteLine("Podany wymiar jest niewłaściwy.");
-                Thread.Sleep(10000);
-                Environment.Exit(1);
-            }
-
-
             StwórzMacierz();
             Console.WriteLine("Macierz główna: ");
             DrukujMacierz(_macierz);
@@ -52,6 +44,12 @@ namespace WielomianInterpolujacy
         {
             Console.WriteLine("Podaj ilość węzłów:");
             _wymiar = Int32.Parse(Console.ReadLine());
+            if (!(_wymiar > 0))
+            {
+                Console.WriteLine("Podany wymiar jest niewłaściwy.");
+                Thread.Sleep(10000);
+                Environment.Exit(1);
+            }
             _węzły = new int[_wymiar];
             _dane = new int[_wymiar];
             _wyznaczniki = new int[_wymiar];
