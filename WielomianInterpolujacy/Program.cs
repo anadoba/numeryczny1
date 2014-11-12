@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace WielomianInterpolujacy
@@ -23,6 +24,14 @@ namespace WielomianInterpolujacy
         static void Main(string[] args)
         {
             WczytajDane();
+            if (!(_wymiar > 0))
+            {
+                Console.WriteLine("Podany wymiar jest niewłaściwy.");
+                Thread.Sleep(10000);
+                Environment.Exit(1);
+            }
+
+
             StwórzMacierz();
             Console.WriteLine("Macierz główna: ");
             DrukujMacierz(_macierz);
@@ -38,11 +47,11 @@ namespace WielomianInterpolujacy
             Console.ReadLine();
         }
 
+
         static void WczytajDane()
         {
             Console.WriteLine("Podaj ilość węzłów:");
             _wymiar = Int32.Parse(Console.ReadLine());
-            // TODO: wymiar ma być większy od ?
             _węzły = new int[_wymiar];
             _dane = new int[_wymiar];
             _wyznaczniki = new int[_wymiar];
@@ -53,8 +62,17 @@ namespace WielomianInterpolujacy
             for (int i = 0; i < _wymiar; i++)
             {
                 Console.Write("Podaj wartość węzła x" + i + ": ");
-                _węzły[i] = Int32.Parse(Console.ReadLine());
-                // TODO: węzły 'x' mają być różne
+                int wartość = Int32.Parse(Console.ReadLine());
+                if (_węzły.Contains(wartość))
+                {
+                    Console.WriteLine("Podana wartość węzła powtarza się.");
+                    i--;
+                }
+                else
+                {
+                    _węzły[i] = wartość;
+                }
+
             }
 
             Console.WriteLine();
